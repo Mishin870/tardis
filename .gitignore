@@ -1,0 +1,33 @@
+# Factorio mod .gitignore
+
+.claude
+run.bat
+
+# Factorio logs
+factorio-*.log
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts
+*.zip
+build/
+dist/
+
+# Backup files
+*.bak
+*.backup

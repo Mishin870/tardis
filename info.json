@@ -1,0 +1,12 @@
+{
+	"name": "tardis",
+	"version": "1.0.0",
+	"title": "tardis",
+	"author": "Mishin870, MagmaMcFry, notnotmelon",
+	"homepage": "https://github.com/Mishin870/tardis",
+	"description": "Iconic TARDIS from Doctor Who! Teleport anywhere on the map or instantly jump to the nearest problem. Features a 30x30 pocket dimension inside for building your personal base.",
+	"factorio_version": "2.0",
+	"dependencies": [
+		"base >= 2.0"
+	]
+}
