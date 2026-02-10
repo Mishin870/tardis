@@ -46,6 +46,7 @@ Place the zip file in your Factorio mods folder:
 
 - **Based on** [Factorissimo3](https://github.com/notnotmelon/factorissimo-2-notnotmelon) by notnotmelon
 - **Teleport sound** [CC0 Sci-fi Vehicle Sound](https://opengameart.org/content/sci-fi-vehicle-sound) by Ogrebane
+- **Graphics** created in [Sora](https://sora.chatgpt.com)
 - **Inspired by** Doctor Who's TARDIS concept
 
 ## Changelog
