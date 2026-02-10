@@ -1,6 +1,6 @@
 # T.A.R.D.I.S. - Time And Relative Dimension(s) In Space
 
-A Factorio 2.0 mod that adds the iconic TARDIS - a teleporting building with a pocket dimension inside!
+A heavily reworked fork of [Factorissimo 3](https://mods.factorio.com/mod/factorissimo-2-notnotmelon) that adds the iconic TARDIS - a teleporting building with a pocket dimension inside!
 
 ## Features
 
@@ -10,11 +10,11 @@ A Factorio 2.0 mod that adds the iconic TARDIS - a teleporting building with a p
 - **Pack it up** - breaking the TARDIS preserves everything inside
 
 ### 🚀 Teleportation System
-**Two modes:**
 - **Map mode** - click anywhere on the map to select your destination
-- **Alert mode** - instantly jump to the nearest problem (prioritizes planets over space)
+- **Alert mode** - instantly jump to the nearest problem (prioritizes planets over space platforms)
 
-Supports teleportation to any location, even between planets. Consumes 5 uranium fuel cells per jump.
+Supports teleportation to any location, even between planets\
+Consumes 5 uranium fuel cells per jump
 
 ### 🔧 Advanced
 - **Recursive** - place TARDISes inside TARDISes!
@@ -30,13 +30,6 @@ Supports teleportation to any location, even between planets. Consumes 5 uranium
    - Green "Map" button → select destination on map
    - Red "Problems" button → auto-teleport to nearest alert
 6. **Exit** through the door at your new location
-
-## Installation
-
-Place the zip file in your Factorio mods folder:
-- **Windows**: `%appdata%/Factorio/mods/`
-- **Linux**: `~/.factorio/mods/`
-- **Mac**: `~/Library/Application Support/factorio/mods/`
 
 ## Commands
 
