@@ -96,8 +96,17 @@ local function surface_sanity_checks(surface, building)
     surface.daytime = 0.5
     surface.freeze_daytime = true
 
-    -- Ensure grass does not generate.
-    surface.map_gen_settings = {width = 2, height = 2}
+    -- Ensure nothing generates on the TARDIS interior surface.
+    surface.map_gen_settings = {
+        width = 2,
+        height = 2,
+        autoplace_controls = {},
+        autoplace_settings = {
+            decorative = { treat_missing_as_default = false },
+            entity = { treat_missing_as_default = false },
+            tile = { treat_missing_as_default = false }
+        }
+    }
 end
 
 local function create_tardis_surface(surface_name)
@@ -113,7 +122,16 @@ local function create_tardis_surface(surface_name)
         return planet.create_surface()
     end
 
-    return game.create_surface(surface_name, {width = 2, height = 2})
+    return game.create_surface(surface_name, {
+        width = 2,
+        height = 2,
+        autoplace_controls = {},
+        autoplace_settings = {
+            decorative = { treat_missing_as_default = false },
+            entity = { treat_missing_as_default = false },
+            tile = { treat_missing_as_default = false }
+        }
+    })
 end
 
 local function create_tardis_position(layout, building)
