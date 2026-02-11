@@ -1,5 +1,6 @@
 local T = "__tardis__"
 local pf = "p-q-"
+local config = require("difficulty-config")
 
 local effects = {
     {
@@ -13,19 +14,20 @@ local effects = {
     },
 }
 
--- tardis buildings
+local difficulty = settings.startup["tardis-technology-difficulty"].value
+local tech = config.technology[difficulty]
 
 data:extend {{
     type = "technology",
     name = "tardis",
     icon = T .. "/graphics/technology/tardis.png",
     icon_size = 256,
-    prerequisites = {"stone-wall", "logistics"},
+    prerequisites = tech.prerequisites,
     effects = effects,
     unit = {
-        count = 200,
-        ingredients = {{"automation-science-pack", 1}},
-        time = 30
+        count = tech.count,
+        ingredients = tech.ingredients,
+        time = tech.time
     },
     order = pf .. "a-a",
 }}
