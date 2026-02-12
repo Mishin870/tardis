@@ -4,7 +4,7 @@ data:extend {
     {
         type = "storage-tank",
         name = "tardis",
-        icon = T .. "/graphics/tardis/icon.png",
+        icon = T .. "/graphics/buildings/tardis/icon.png",
         icon_size = 64,
         flags = {"player-creation", "placeable-player"},
         minable = {mining_time = 0.5, result = "tardis-instantiated", count = 1},
@@ -16,7 +16,7 @@ data:extend {
             picture = {
                 layers = {
                     {
-                        filename = T .. "/graphics/tardis/shadow.png",
+                        filename = T .. "/graphics/buildings/tardis/shadow.png",
                         width = 211 * 2,
                         height = 182 * 2,
                         scale = 0.5,
@@ -24,7 +24,7 @@ data:extend {
                         draw_as_shadow = true
                     },
                     {
-                        filename = T .. "/graphics/tardis/base.png",
+                        filename = T .. "/graphics/buildings/tardis/base.png",
                         width = 211 * 2,
                         height = 182 * 2,
                         scale = 0.5,
@@ -50,11 +50,11 @@ data:extend {
         localised_name = {"item-name.tardis-packed", {"entity-name.tardis"}},
         icons = {
             {
-                icon = T .. "/graphics/tardis/icon.png",
+                icon = T .. "/graphics/buildings/tardis/icon.png",
                 icon_size = 64,
             },
             {
-                icon = T .. "/graphics/tardis/packed.png",
+                icon = T .. "/graphics/buildings/tardis/packed.png",
                 icon_size = 64,
             }
         },
@@ -70,7 +70,7 @@ data:extend {
     {
         type = "item",
         name = "tardis",
-        icon = T .. "/graphics/tardis/icon.png",
+        icon = T .. "/graphics/buildings/tardis/icon.png",
         icon_size = 64,
         subgroup = "tardis",
         order = "b-a",

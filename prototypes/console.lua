@@ -4,7 +4,7 @@ data:extend {
     {
         type = "container",
         name = "tardis-console",
-        icon = T .. "/graphics/console/icon.png",
+        icon = T .. "/graphics/buildings/console/icon.png",
         icon_size = 64,
         flags = {"not-on-map", "hide-alt-info", "not-deconstructable", "not-blueprintable", "not-flammable", "not-upgradable"},
         selectable_in_game = true,
@@ -19,7 +19,7 @@ data:extend {
         picture = {
             layers = {
                 {
-                    filename = T .. "/graphics/console/shadow.png",
+                    filename = T .. "/graphics/buildings/console/shadow.png",
                     width = 800,
                     height = 418,
                     scale = 0.5,
@@ -27,7 +27,7 @@ data:extend {
                     draw_as_shadow = true
                 },
                 {
-                    filename = T .. "/graphics/console/base.png",
+                    filename = T .. "/graphics/buildings/console/base.png",
                     width = 800,
                     height = 418,
                     scale = 0.5,
@@ -40,7 +40,7 @@ data:extend {
     {
         type = "animation",
         name = "tardis-console-animated",
-        filename = T .. "/graphics/console/animated.png",
+        filename = T .. "/graphics/buildings/console/animated.png",
         width = 800,
         height = 418,
         frame_count = 10,
@@ -64,7 +64,7 @@ data:extend {
     {
         type = "selection-tool",
         name = "tardis-teleport-selector",
-        icon = T .. "/graphics/console/icon.png",
+        icon = T .. "/graphics/buildings/console/icon.png",
         icon_size = 64,
         hidden = true,
         hidden_in_factoriopedia = true,
