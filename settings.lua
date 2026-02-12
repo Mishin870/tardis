@@ -1,11 +1,19 @@
 local config = require("difficulty-config")
 
+local fuel_types = {"wood", "coal", "solid-fuel", "rocket-fuel", "nuclear-fuel", "uranium-fuel-cell"}
+if mods["space-age"] then
+    fuel_types[#fuel_types + 1] = "carbon"
+    fuel_types[#fuel_types + 1] = "fusion-power-cell"
+    fuel_types[#fuel_types + 1] = "bioflux"
+    fuel_types[#fuel_types + 1] = "promethium-asteroid-chunk"
+end
+
 data:extend {
     {
         type = "string-setting",
         name = "tardis-technology-difficulty",
         setting_type = "startup",
-        default_value = "easy",
+        default_value = "hard",
         allowed_values = {"easy", "medium", "hard"},
         order = "a",
         localised_description = config.build_description("technology", "tardis-technology-difficulty")
@@ -14,7 +22,7 @@ data:extend {
         type = "string-setting",
         name = "tardis-recipe-difficulty",
         setting_type = "startup",
-        default_value = "easy",
+        default_value = "hard",
         allowed_values = {"easy", "medium", "hard"},
         order = "b",
         localised_description = config.build_description("recipe", "tardis-recipe-difficulty")
@@ -24,9 +32,7 @@ data:extend {
         name = "tardis-fuel-type",
         setting_type = "startup",
         default_value = "uranium-fuel-cell",
-        allowed_values = mods["space-age"]
-            and {"coal", "solid-fuel", "rocket-fuel", "nuclear-fuel", "uranium-fuel-cell", "promethium-asteroid-chunk"}
-            or  {"coal", "solid-fuel", "rocket-fuel", "nuclear-fuel", "uranium-fuel-cell"},
+        allowed_values = fuel_types,
         order = "c"
     },
     {
