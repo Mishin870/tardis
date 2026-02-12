@@ -41,6 +41,8 @@ Supports teleportation to any location, even between planets
 
 > Exact values for each difficulty level are shown in the setting tooltips in-game.
 
+> When SpaceAge is enabled, Hard difficulty changes (uses space resources).
+
 ## Commands
 
 `/give-lost-tardis-buildings` - Recovers lost TARDIS items (admin only)
