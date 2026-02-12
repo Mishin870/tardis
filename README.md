@@ -52,16 +52,6 @@ Supports teleportation to any location, even between planets
 - **Graphics** created in [Sora](https://sora.chatgpt.com)
 - **Inspired by** Doctor Who's TARDIS concept
 
-## Changelog
-
-### 1.0.1
-- Compatibility with "Everything on Nauvis" mod
-- Added mod settings: fuel type/amount, technology/recipe difficulty, map teleport toggle, space platform blocking
-- Improved teleportation algorithm: pre-checks safe landing and cycles through alerts before consuming fuel
-
-### 1.0.0
-- Initial release with pocket dimensions and teleportation
-
 ---
 
 **Enjoy your adventures in time and space!** 🌌

@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2026-02-12
+  Changes:
+    - Compatibility with "Everything on Nauvis" mod
+    - Added mod settings: fuel type/amount, technology/recipe difficulty, map teleport toggle, space platform blocking
+    - Improved teleportation algorithm: pre-checks safe landing and cycles through alerts before consuming fuel
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2026-02-10
+  Changes:
+    - Initial release with pocket dimensions and teleportation
