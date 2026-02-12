@@ -9,7 +9,9 @@ local SOUND_LOOP_TICKS = 230
 -- SURFACE VALIDATION --
 
 local function is_surface_blocked(surface)
-    return remote_api.is_tardis_surface(surface)
+    if remote_api.is_tardis_surface(surface) then return true end
+    if settings.startup["tardis-block-space-platforms"].value and surface.platform ~= nil then return true end
+    return false
 end
 
 -- TELEPORT EFFECTS --

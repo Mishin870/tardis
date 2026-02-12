@@ -43,6 +43,13 @@ data:extend {
         order = "e"
     },
     {
+        type = "bool-setting",
+        name = "tardis-block-space-platforms",
+        setting_type = "startup",
+        default_value = false,
+        order = "f"
+    },
+    {
         type = "int-setting",
         name = "tardis-fuel-amount",
         setting_type = "startup",
