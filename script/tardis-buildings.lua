@@ -387,6 +387,11 @@ local function cleanup_tardis_interior(tardis)
     storage.was_deleted = storage.was_deleted or {}
     storage.was_deleted[tardis.id] = true
 
+    -- Invalidate all keys bound to this TARDIS
+    if storage.tardis_valid_keys then
+        storage.tardis_valid_keys[tardis.id] = nil
+    end
+
     for k in pairs(tardis) do tardis[k] = nil end
 end
 
@@ -676,6 +681,7 @@ local clone_forbidden_prefixes = {
     "tardis-eject-chest-",
     "tardis-hidden-radar-",
     "tardis-console",
+    "tardis-key-synchronizer",
 }
 
 local function is_entity_clone_forbidden(name)

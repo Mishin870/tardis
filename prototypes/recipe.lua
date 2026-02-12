@@ -14,7 +14,29 @@ data:extend {
         main_product = "tardis",
         localised_name = {"entity-name.tardis"},
         category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
-    }
+    },
+    {
+        type = "recipe",
+        name = "tardis-key-synchronizer",
+        enabled = false,
+        energy_required = 30,
+        ingredients = {
+            {type = "item", name = "steel-plate", amount = 100},
+            {type = "item", name = "processing-unit", amount = 100},
+        },
+        results = {{type = "item", name = "tardis-key-synchronizer", amount = 1}},
+    },
+    {
+        type = "recipe",
+        name = "tardis-key",
+        enabled = false,
+        energy_required = 10,
+        ingredients = {
+            {type = "item", name = "iron-plate", amount = 100},
+            {type = "item", name = "electronic-circuit", amount = 50},
+        },
+        results = {{type = "item", name = "tardis-key", amount = 1}},
+    },
 }
 
 -- small vanilla change to allow factories to be crafted at the start of the game

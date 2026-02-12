@@ -7,6 +7,7 @@ require "prototypes.tile"
 require "prototypes.space-location"
 require "prototypes.ceiling"
 require "prototypes.quality-tooltips"
+require "prototypes.key-synchronizer"
 
 data:extend {
     {

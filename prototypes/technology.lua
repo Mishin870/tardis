@@ -12,6 +12,14 @@ local effects = {
         space_location = "tardis-pocket-surface",
         use_icon_overlay_constant = false,
     },
+    {
+        type = "unlock-recipe",
+        recipe = "tardis-key-synchronizer",
+    },
+    {
+        type = "unlock-recipe",
+        recipe = "tardis-key",
+    },
 }
 
 local difficulty = settings.startup["tardis-technology-difficulty"].value
