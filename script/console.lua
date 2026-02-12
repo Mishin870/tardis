@@ -1,8 +1,8 @@
 local find_surrounding_tardis = remote_api.find_surrounding_tardis
 local execute_later = tardis.execute_later
 
-local FUEL_ITEM = "uranium-fuel-cell"
-local FUEL_COST = 5
+local function get_fuel_item() return settings.startup["tardis-fuel-type"].value end
+local function get_fuel_cost() return settings.startup["tardis-fuel-amount"].value end
 local TELEPORT_TICKS = 690
 local SOUND_LOOP_TICKS = 230
 
@@ -54,7 +54,7 @@ end
 function apply_console_filters(entity)
     local inventory = entity.get_inventory(defines.inventory.chest)
     for i = 1, #inventory do
-        inventory.set_filter(i, FUEL_ITEM)
+        inventory.set_filter(i, get_fuel_item())
     end
 end
 
@@ -131,7 +131,7 @@ local function create_console_gui(player, entity)
         type = "button",
         name = "tardis-console-teleport",
         caption = {"tardis-console-gui.teleport"},
-        tooltip = {"tardis-console-gui.teleport-tooltip", FUEL_COST, "[item=" .. FUEL_ITEM .. "]"},
+        tooltip = {"tardis-console-gui.teleport-tooltip", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"},
         style = "confirm_button",
     }
     button.enabled = not on_cooldown
@@ -140,7 +140,7 @@ local function create_console_gui(player, entity)
         type = "button",
         name = "tardis-console-teleport-to-alert",
         caption = {"tardis-console-gui.teleport-to-alert"},
-        tooltip = {"tardis-console-gui.teleport-to-alert-tooltip", FUEL_COST, "[item=" .. FUEL_ITEM .. "]"},
+        tooltip = {"tardis-console-gui.teleport-to-alert-tooltip", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"},
         style = "red_confirm_button",
     }
     alert_button.enabled = not on_cooldown
@@ -306,11 +306,11 @@ local function start_teleport(player, console, tardis_data, target_position, tar
     local inventory = console.get_inventory(defines.inventory.chest)
 
     -- Consume fuel
-    local remaining = FUEL_COST
+    local remaining = get_fuel_cost()
     for i = 1, #inventory do
         if remaining <= 0 then break end
         local slot = inventory[i]
-        if slot.valid_for_read and slot.name == FUEL_ITEM then
+        if slot.valid_for_read and slot.name == get_fuel_item() then
             local take = math.min(slot.count, remaining)
             slot.count = slot.count - take
             remaining = remaining - take
@@ -389,13 +389,13 @@ gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport$"] = functio
     local available = 0
     for i = 1, #inventory do
         local slot = inventory[i]
-        if slot.valid_for_read and slot.name == FUEL_ITEM then
+        if slot.valid_for_read and slot.name == get_fuel_item() then
             available = available + slot.count
         end
     end
 
-    if available < FUEL_COST then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", FUEL_COST}, create_at_cursor = true}
+    if available < get_fuel_cost() then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"}, create_at_cursor = true}
         player.play_sound {path = "utility/cannot_build"}
         return
     end
@@ -440,13 +440,13 @@ gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport%-to%-alert$"
     local available = 0
     for i = 1, #inventory do
         local slot = inventory[i]
-        if slot.valid_for_read and slot.name == FUEL_ITEM then
+        if slot.valid_for_read and slot.name == get_fuel_item() then
             available = available + slot.count
         end
     end
 
-    if available < FUEL_COST then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", FUEL_COST}, create_at_cursor = true}
+    if available < get_fuel_cost() then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"}, create_at_cursor = true}
         player.play_sound {path = "utility/cannot_build"}
         return
     end
