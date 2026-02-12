@@ -60,16 +60,40 @@ tardis.on_event({defines.events.on_research_finished, defines.events.on_research
     for _, tardis in pairs(storage.factories) do build_tardis_upgrades(tardis) end
 end)
 
+-- Sanitize map_gen_settings on existing pocket surfaces when loading saves
+-- (prevents noise expression errors when mods like "Everything on Nauvis" change autoplace controls)
+tardis.on_event(tardis.events.on_init(), function()
+    local surface = game.get_surface("tardis-pocket-surface")
+    if surface then
+        surface.map_gen_settings = {
+            width = 2,
+            height = 2,
+            autoplace_controls = {},
+            autoplace_settings = {
+                decorative = { treat_missing_as_default = false },
+                entity = { treat_missing_as_default = false },
+                tile = { treat_missing_as_default = false }
+            }
+        }
+    end
+end)
+
 -- tardis GENERATION --
 
 tardis.on_event(defines.events.on_surface_created, function(event)
     local surface = game.get_surface(event.surface_index)
     if surface.name ~= "tardis-pocket-surface" then return end
 
-    local mgs = surface.map_gen_settings
-    mgs.width = 2
-    mgs.height = 2
-    surface.map_gen_settings = mgs
+    surface.map_gen_settings = {
+        width = 2,
+        height = 2,
+        autoplace_controls = {},
+        autoplace_settings = {
+            decorative = { treat_missing_as_default = false },
+            entity = { treat_missing_as_default = false },
+            tile = { treat_missing_as_default = false }
+        }
+    }
 end)
 
 --- searches a tardis floor for "holes" where a new tardis could be created

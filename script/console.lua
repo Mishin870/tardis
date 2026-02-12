@@ -6,6 +6,12 @@ local function get_fuel_cost() return settings.startup["tardis-fuel-amount"].val
 local TELEPORT_TICKS = 690
 local SOUND_LOOP_TICKS = 230
 
+-- SURFACE VALIDATION --
+
+local function is_surface_blocked(surface)
+    return remote_api.is_tardis_surface(surface)
+end
+
 -- TELEPORT EFFECTS --
 
 local SPARK_CHANCE = 0.15
@@ -241,7 +247,7 @@ tardis.register_delayed_function("tardis_console_teleport_complete", function(co
     if tardis_data and tardis_data.building and tardis_data.building.valid then
         local building = tardis_data.building
         local target_surface = game.get_surface(target_surface_index)
-        if target_surface then
+        if target_surface and not is_surface_blocked(target_surface) then
             local safe_position = target_surface.find_non_colliding_position(building.name, {target_x, target_y}, 40, 0.5)
 
             if safe_position then
@@ -276,7 +282,6 @@ tardis.register_delayed_function("tardis_console_teleport_complete", function(co
                 }
             else
                 -- No safe location found
-                -- Play error sound on the inside surface (player might have console closed)
                 tardis_data.inside_surface.play_sound {
                     path = "utility/cannot_build",
                     position = {tardis_data.inside_x, tardis_data.inside_y},
@@ -302,9 +307,53 @@ tardis.register_delayed_function("tardis_console_teleport_complete", function(co
     end
 end)
 
+-- SHARED VALIDATION --
+
+local function validate_console(player)
+    local opened = player.opened
+    if not opened or not opened.valid or opened.name ~= "tardis-console" then return nil end
+    if is_console_on_cooldown(opened) then return nil end
+
+    local tardis_data = find_surrounding_tardis(opened.surface, opened.position)
+    if not tardis_data then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-tardis"}, create_at_cursor = true}
+        player.play_sound {path = "utility/cannot_build"}
+        return nil
+    end
+
+    if not tardis_data.building or not tardis_data.building.valid then
+        player.create_local_flying_text {text = {"tardis-console-gui.not-placed"}, create_at_cursor = true}
+        player.play_sound {path = "utility/cannot_build"}
+        return nil
+    end
+
+    local inventory = opened.get_inventory(defines.inventory.chest)
+    local available = 0
+    for i = 1, #inventory do
+        local slot = inventory[i]
+        if slot.valid_for_read and slot.name == get_fuel_item() then
+            available = available + slot.count
+        end
+    end
+
+    if available < get_fuel_cost() then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"}, create_at_cursor = true}
+        player.play_sound {path = "utility/cannot_build"}
+        return nil
+    end
+
+    return opened, tardis_data
+end
+
 -- LOCATION SELECTION --
 
 local function start_teleport(player, console, tardis_data, target_position, target_surface)
+    if is_surface_blocked(target_surface) then
+        player.create_local_flying_text {text = {"tardis-console-gui.invalid-surface"}, create_at_cursor = true}
+        player.play_sound {path = "utility/cannot_build"}
+        return
+    end
+
     local inventory = console.get_inventory(defines.inventory.chest)
 
     -- Consume fuel
@@ -365,42 +414,14 @@ local function start_teleport(player, console, tardis_data, target_position, tar
     execute_later("tardis_console_teleport_complete", TELEPORT_TICKS, console.unit_number, building.unit_number, tx, ty, target_surface.index)
 end
 
+-- MAP TELEPORT BUTTON --
+
 gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport$"] = function(event)
     local player = game.get_player(event.player_index)
     if not player then return end
 
-    local opened = player.opened
-    if not opened or not opened.valid or opened.name ~= "tardis-console" then return end
-
-    if is_console_on_cooldown(opened) then return end
-
-    local tardis = find_surrounding_tardis(opened.surface, opened.position)
-    if not tardis then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-tardis"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
-
-    if not tardis.building or not tardis.building.valid then
-        player.create_local_flying_text {text = {"tardis-console-gui.not-placed"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
-
-    local inventory = opened.get_inventory(defines.inventory.chest)
-    local available = 0
-    for i = 1, #inventory do
-        local slot = inventory[i]
-        if slot.valid_for_read and slot.name == get_fuel_item() then
-            available = available + slot.count
-        end
-    end
-
-    if available < get_fuel_cost() then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
+    local console, tardis_data = validate_console(player)
+    if not console then return end
 
     -- Give selection tool to cursor for location picking
     player.clear_cursor()
@@ -408,52 +429,26 @@ gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport$"] = functio
 
     storage.pending_teleports = storage.pending_teleports or {}
     storage.pending_teleports[event.player_index] = {
-        console_unit_number = opened.unit_number,
-        console = opened,
-        tardis_data = tardis,
+        console_unit_number = console.unit_number,
+        console = console,
+        tardis_data = tardis_data,
     }
 
     player.create_local_flying_text {text = {"tardis-console-gui.select-location"}, create_at_cursor = true}
 end
 
+-- ALERT TELEPORT BUTTON --
+
 gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport%-to%-alert$"] = function(event)
     local player = game.get_player(event.player_index)
     if not player then return end
 
-    local opened = player.opened
-    if not opened or not opened.valid or opened.name ~= "tardis-console" then return end
+    local console, tardis_data = validate_console(player)
+    if not console then return end
 
-    if is_console_on_cooldown(opened) then return end
+    local building = tardis_data.building
 
-    local tardis = find_surrounding_tardis(opened.surface, opened.position)
-    if not tardis then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-tardis"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
-
-    if not tardis.building or not tardis.building.valid then
-        player.create_local_flying_text {text = {"tardis-console-gui.not-placed"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
-
-    local inventory = opened.get_inventory(defines.inventory.chest)
-    local available = 0
-    for i = 1, #inventory do
-        local slot = inventory[i]
-        if slot.valid_for_read and slot.name == get_fuel_item() then
-            available = available + slot.count
-        end
-    end
-
-    if available < get_fuel_cost() then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-fuel", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
-        return
-    end
-
-    -- Get all alerts
+    -- Collect all alerts, sorted: planet first, then space
     local all_alerts = player.get_alerts({})
     local planet_alerts = {}
     local space_alerts = {}
@@ -462,13 +457,12 @@ gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport%-to%-alert$"
         local surface = game.get_surface(surface_index)
         if surface and surface.valid then
             local is_space = surface.platform ~= nil
-            for alert_type, alerts in pairs(alert_types) do
+            for _, alerts in pairs(alert_types) do
                 for _, alert in pairs(alerts) do
                     if alert.position then
                         local alert_data = {
                             surface = surface,
                             position = alert.position,
-                            type = alert_type,
                         }
                         if is_space then
                             space_alerts[#space_alerts + 1] = alert_data
@@ -481,18 +475,47 @@ gui_events[defines.events.on_gui_click]["^tardis%-console%-teleport%-to%-alert$"
         end
     end
 
-    -- Prioritize planet alerts over space alerts
-    local target_alert = planet_alerts[1] or space_alerts[1]
+    -- Chain through alerts: pre-check surface block and safe location
+    local has_blocked_surface = false
+    local has_no_safe_location = false
 
-    if not target_alert then
-        player.create_local_flying_text {text = {"tardis-console-gui.no-alerts"}, create_at_cursor = true}
-        player.play_sound {path = "utility/cannot_build"}
+    local function try_alerts(alerts)
+        for _, alert in ipairs(alerts) do
+            if is_surface_blocked(alert.surface) then
+                has_blocked_surface = true
+            elseif not alert.surface.find_non_colliding_position(building.name, alert.position, 40, 0.5) then
+                has_no_safe_location = true
+            else
+                return alert
+            end
+        end
+        return nil
+    end
+
+    local target_alert = try_alerts(planet_alerts) or try_alerts(space_alerts)
+
+    if target_alert then
+        start_teleport(player, console, tardis_data, target_alert.position, target_alert.surface)
         return
     end
 
-    -- Start teleportation to alert location
-    start_teleport(player, opened, tardis, target_alert.position, target_alert.surface)
+    -- No valid alert found — show appropriate error messages
+    player.play_sound {path = "utility/cannot_build"}
+
+    if #planet_alerts == 0 and #space_alerts == 0 then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-alerts"}, create_at_cursor = true}
+        return
+    end
+
+    if has_no_safe_location then
+        player.create_local_flying_text {text = {"tardis-console-gui.no-safe-location"}, create_at_cursor = true}
+    end
+    if has_blocked_surface then
+        player.create_local_flying_text {text = {"tardis-console-gui.invalid-surface"}, create_at_cursor = true}
+    end
 end
+
+-- MAP SELECTION HANDLERS --
 
 tardis.on_event(defines.events.on_player_selected_area, function(event)
     if event.item ~= "tardis-teleport-selector" then return end
@@ -510,8 +533,7 @@ tardis.on_event(defines.events.on_player_selected_area, function(event)
     local console = pending.console
     if not console or not console.valid then return end
 
-    -- Reject pocket surface
-    if remote_api.is_tardis_surface(event.surface) then
+    if is_surface_blocked(event.surface) then
         player.create_local_flying_text {text = {"tardis-console-gui.invalid-surface"}, create_at_cursor = true}
         player.play_sound {path = "utility/cannot_build"}
         return
@@ -541,7 +563,7 @@ tardis.on_event(defines.events.on_player_alt_selected_area, function(event)
     local console = pending.console
     if not console or not console.valid then return end
 
-    if remote_api.is_tardis_surface(event.surface) then
+    if is_surface_blocked(event.surface) then
         player.create_local_flying_text {text = {"tardis-console-gui.invalid-surface"}, create_at_cursor = true}
         player.play_sound {path = "utility/cannot_build"}
         return
