@@ -13,8 +13,7 @@ A heavily reworked fork of [Factorissimo 3](https://mods.factorio.com/mod/factor
 - **Map mode** - click anywhere on the map to select your destination
 - **Alert mode** - instantly jump to the nearest problem (prioritizes planets over space platforms)
 
-Supports teleportation to any location, even between planets\
-Consumes 5 uranium fuel cells per jump
+Supports teleportation to any location, even between planets
 
 ### 🔧 Advanced
 - **Recursive** - place TARDISes inside TARDISes!
@@ -25,11 +24,22 @@ Consumes 5 uranium fuel cells per jump
 1. **Research** TARDIS technology
 2. **Craft** and **place** the TARDIS
 3. **Enter** through the door (front side)
-4. **Load fuel** - place 5+ uranium fuel cells in the console
+4. **Load fuel** into the console (fuel type and amount are configurable in mod settings)
 5. **Teleport**:
    - Green "Map" button → select destination on map
    - Red "Problems" button → auto-teleport to nearest alert
 6. **Exit** through the door at your new location
+
+## Settings
+
+- **Technology difficulty** (Easy / Medium / Hard, default: Hard) — research cost for TARDIS technology
+- **Recipe difficulty** (Easy / Medium / Hard, default: Hard) — crafting cost for TARDIS
+- **Jump fuel type** (default: Uranium fuel cell) — item consumed as fuel for teleportation
+- **Jump fuel amount** (1–100, default: 5) — number of fuel items consumed per jump
+- **Manual map teleportation** (default: On) — show the green "Map" button in the console
+- **Block teleport to space platforms** (default: Off) — prevents TARDIS from teleporting to space platforms
+
+> Exact values for each difficulty level are shown in the setting tooltips in-game.
 
 ## Commands
 
@@ -43,6 +53,11 @@ Consumes 5 uranium fuel cells per jump
 - **Inspired by** Doctor Who's TARDIS concept
 
 ## Changelog
+
+### 1.0.1
+- Compatibility with "Everything on Nauvis" mod
+- Added mod settings: fuel type/amount, technology/recipe difficulty, map teleport toggle, space platform blocking
+- Improved teleportation algorithm: pre-checks safe landing and cycles through alerts before consuming fuel
 
 ### 1.0.0
 - Initial release with pocket dimensions and teleportation
