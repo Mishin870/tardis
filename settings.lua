@@ -30,6 +30,13 @@ data:extend {
         order = "c"
     },
     {
+        type = "bool-setting",
+        name = "tardis-map-teleport",
+        setting_type = "startup",
+        default_value = true,
+        order = "e"
+    },
+    {
         type = "int-setting",
         name = "tardis-fuel-amount",
         setting_type = "startup",

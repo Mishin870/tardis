@@ -127,14 +127,16 @@ local function create_console_gui(player, entity)
 
     local on_cooldown = is_console_on_cooldown(entity)
 
-    local button = inner.add {
-        type = "button",
-        name = "tardis-console-teleport",
-        caption = {"tardis-console-gui.teleport"},
-        tooltip = {"tardis-console-gui.teleport-tooltip", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"},
-        style = "confirm_button",
-    }
-    button.enabled = not on_cooldown
+    if settings.startup["tardis-map-teleport"].value then
+        local button = inner.add {
+            type = "button",
+            name = "tardis-console-teleport",
+            caption = {"tardis-console-gui.teleport"},
+            tooltip = {"tardis-console-gui.teleport-tooltip", get_fuel_cost(), "[item=" .. get_fuel_item() .. "]"},
+            style = "confirm_button",
+        }
+        button.enabled = not on_cooldown
+    end
 
     local alert_button = inner.add {
         type = "button",
