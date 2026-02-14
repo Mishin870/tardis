@@ -1,6 +1,9 @@
 local config = require("difficulty-config")
 
 local difficulty = settings.startup["tardis-recipe-difficulty"].value
+if difficulty == "space" and not mods["space-age"] then
+    difficulty = "hard"
+end
 local recipe = config.recipe[difficulty]
 
 data:extend {

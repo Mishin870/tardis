@@ -23,6 +23,9 @@ local effects = {
 }
 
 local difficulty = settings.startup["tardis-technology-difficulty"].value
+if difficulty == "space" and not mods["space-age"] then
+    difficulty = "hard"
+end
 local tech = config.technology[difficulty]
 
 data:extend {{

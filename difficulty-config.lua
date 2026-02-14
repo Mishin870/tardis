@@ -22,8 +22,20 @@ config.technology = {
             {"chemical-science-pack", 1},
         },
     },
-    hard = has_space_age and {
+    hard = {
         count = 1500,
+        time = 60,
+        prerequisites = {"utility-science-pack"},
+        ingredients = {
+            {"automation-science-pack", 1},
+            {"logistic-science-pack", 1},
+            {"chemical-science-pack", 1},
+            {"production-science-pack", 1},
+            {"utility-science-pack", 1},
+        },
+    },
+    space = {
+        count = 2000,
         time = 60,
         prerequisites = {"electromagnetic-science-pack"},
         ingredients = {
@@ -35,17 +47,6 @@ config.technology = {
             {"space-science-pack", 1},
             {"agricultural-science-pack", 1},
             {"electromagnetic-science-pack", 1},
-        },
-    } or {
-        count = 1500,
-        time = 60,
-        prerequisites = {"utility-science-pack"},
-        ingredients = {
-            {"automation-science-pack", 1},
-            {"logistic-science-pack", 1},
-            {"chemical-science-pack", 1},
-            {"production-science-pack", 1},
-            {"utility-science-pack", 1},
         },
     },
 }
@@ -67,24 +68,25 @@ config.recipe = {
             {type = "item", name = "processing-unit",   amount = 100},
         },
     },
-    hard = has_space_age and {
+    hard = {
         energy_required = 120,
         ingredients = {
-            {type = "item", name = "steel-plate",         amount = 1000},
-            {type = "item", name = "refined-concrete",    amount = 1000},
-            {type = "item", name = "low-density-structure", amount = 100},
-            {type = "item", name = "rocket-part", amount = 50},
-            {type = "item", name = "bioflux",             amount = 100},
-            {type = "item", name = "holmium-plate",       amount = 100},
+            {type = "item", name = "steel-plate",           amount = 1000},
+            {type = "item", name = "refined-concrete",      amount = 1000},
+            {type = "item", name = "processing-unit",       amount = 300},
+            {type = "item", name = "low-density-structure", amount = 200},
         },
-    } or {
-        energy_required = 120,
+    },
+    space = {
+        energy_required = 180,
         ingredients = {
-            {type = "item", name = "steel-plate",         amount = 1000},
-            {type = "item", name = "refined-concrete",    amount = 1000},
-            {type = "item", name = "processing-unit",     amount = 200},
-            {type = "item", name = "low-density-structure", amount = 100},
-            {type = "item", name = "rocket-part", amount = 50},
+            {type = "item", name = "steel-plate",           amount = 1500},
+            {type = "item", name = "refined-concrete",      amount = 1500},
+            {type = "item", name = "low-density-structure", amount = 300},
+            {type = "item", name = "quantum-processor",     amount = 100},
+            {type = "item", name = "bioflux",               amount = 200},
+            {type = "item", name = "holmium-plate",         amount = 200},
+            {type = "item", name = "superconductor",        amount = 100},
         },
     },
 }
@@ -114,13 +116,20 @@ end
 --- @param category string "recipe" or "technology"
 --- @param setting_name string the setting name for locale key lookup
 function config.build_description(category, setting_name)
-    return {"",
+    local desc = {"",
         build_level_description(setting_name, "easy", category, config[category].easy),
         "\n\n",
         build_level_description(setting_name, "medium", category, config[category].medium),
         "\n\n",
         build_level_description(setting_name, "hard", category, config[category].hard),
     }
+
+    if has_space_age then
+        desc[#desc + 1] = "\n\n"
+        desc[#desc + 1] = build_level_description(setting_name, "space", category, config[category].space)
+    end
+
+    return desc
 end
 
 return config

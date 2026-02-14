@@ -8,13 +8,20 @@ if mods["space-age"] then
     fuel_types[#fuel_types + 1] = "promethium-asteroid-chunk"
 end
 
+local difficulty_levels = {"easy", "medium", "hard"}
+local default_difficulty = "hard"
+if mods["space-age"] then
+    difficulty_levels[#difficulty_levels + 1] = "space"
+    default_difficulty = "space"
+end
+
 data:extend {
     {
         type = "string-setting",
         name = "tardis-technology-difficulty",
         setting_type = "startup",
-        default_value = "hard",
-        allowed_values = {"easy", "medium", "hard"},
+        default_value = default_difficulty,
+        allowed_values = difficulty_levels,
         order = "a",
         localised_description = config.build_description("technology", "tardis-technology-difficulty")
     },
@@ -22,8 +29,8 @@ data:extend {
         type = "string-setting",
         name = "tardis-recipe-difficulty",
         setting_type = "startup",
-        default_value = "hard",
-        allowed_values = {"easy", "medium", "hard"},
+        default_value = default_difficulty,
+        allowed_values = difficulty_levels,
         order = "b",
         localised_description = config.build_description("recipe", "tardis-recipe-difficulty")
     },

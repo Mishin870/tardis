@@ -33,16 +33,14 @@ Supports teleportation to any location, even between planets
 
 ## Settings
 
-- **Technology difficulty** (Easy / Medium / Hard, default: Hard) — research cost for TARDIS technology
-- **Recipe difficulty** (Easy / Medium / Hard, default: Hard) — crafting cost for TARDIS
+- **Technology difficulty** (Easy / Medium / Hard / Space) — research cost for TARDIS technology
+- **Recipe difficulty** (Easy / Medium / Hard / Space) — crafting cost for TARDIS
 - **Jump fuel type** (default: Uranium fuel cell) — item consumed as fuel for teleportation
 - **Jump fuel amount** (1–100, default: 5) — number of fuel items consumed per jump
 - **Manual map teleportation** (default: On) — show the green "Map" button in the console
 - **Block teleport to space platforms** (default: Off) — prevents TARDIS from teleporting to space platforms
 
 > Exact values for each difficulty level are shown in the setting tooltips in-game.
-
-> When SpaceAge is enabled, Hard difficulty changes (uses space resources).
 
 ## Recall Keys
 
