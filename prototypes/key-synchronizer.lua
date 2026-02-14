@@ -32,9 +32,19 @@ for _, color in pairs(colors) do
         selection_box = {{0, 0}, {0, 0}},
         collision_mask = {layers = {}},
         pictures = {{
-            filename = T .. "/graphics/items/key.png",
-            width = 64,
-            height = 64,
+            layers = {
+                {
+                    filename = T .. "/graphics/items/key.png",
+                    width = 64,
+                    height = 64,
+                },
+                {
+                    filename = T .. "/graphics/items/key-tint.png",
+                    width = 64,
+                    height = 64,
+                    tint = {r = color.r, g = color.g, b = color.b, a = 1},
+                },
+            }
         }},
         autoplace = {probability_expression = 0},
     }}
