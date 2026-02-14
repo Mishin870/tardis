@@ -144,7 +144,7 @@ local function check_position_and_enter_tardis(player, is_airborne)
 
     if not tardis or tardis.inactive then return end
 
-    local door_width = is_airborne and 4 or 0.9
+    local door_width = is_airborne and 4 or 1.5
     local is_standing_in_doorway = physical_position.y > tardis.outside_y + 1 and math.abs(physical_position.x - tardis.outside_x) < door_width
     if not is_standing_in_doorway then return end
 
