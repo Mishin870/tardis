@@ -10,8 +10,8 @@ data:extend {
         minable = {mining_time = 0.5, result = "tardis-instantiated", count = 1},
         placeable_by = {item = "tardis", count = 1},
         max_health = 2000,
-        collision_box = {{-2, -0.8}, {2.2, 2.8}},
-        selection_box = {{-2, -0.8}, {2.2, 2.8}},
+        collision_box = {{-1.95, -0.95}, {1.95, 0.95}},
+        selection_box = {{-1.95, -0.95}, {1.95, 0.95}},
         pictures = {
             picture = {
                 layers = {
@@ -20,7 +20,7 @@ data:extend {
                         width = 211 * 2,
                         height = 182 * 2,
                         scale = 0.5,
-                        shift = {1.5, 0},
+                        shift = {1.37, -1.7},
                         draw_as_shadow = true
                     },
                     {
@@ -28,7 +28,7 @@ data:extend {
                         width = 211 * 2,
                         height = 182 * 2,
                         scale = 0.5,
-                        shift = {1.5, 0},
+                        shift = {1.37, -1.7},
                     }
                 }
             },

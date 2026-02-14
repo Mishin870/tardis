@@ -11,8 +11,8 @@ data:extend {
         hidden = true,
         hidden_in_factoriopedia = true,
         max_health = 1000,
-        collision_box = {{-3.6, -3}, {2.5, 1.2}},
-        selection_box = {{-3.6, -3}, {2.5, 1.2}},
+        collision_box = {{-2.95, -1.95}, {2.95, 1.95}},
+        selection_box = {{-2.95, -1.95}, {2.95, 1.95}},
         collision_mask = {layers = {object = true, player = true, water_tile = true}},
         inventory_size = 10,
         inventory_type = "with_filters_and_bar",
@@ -23,7 +23,7 @@ data:extend {
                     width = 800,
                     height = 418,
                     scale = 0.5,
-                    shift = {2.5, -2},
+                    shift = {3, -1},
                     draw_as_shadow = true
                 },
                 {
@@ -31,7 +31,7 @@ data:extend {
                     width = 800,
                     height = 418,
                     scale = 0.5,
-                    shift = {2.5, -2},
+                    shift = {3, -1},
                 }
             }
         },
