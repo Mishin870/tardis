@@ -135,17 +135,28 @@ local function check_position_and_enter_tardis(player, is_airborne)
 
     local tardis = find_tardis_by_area {
         surface = player.physical_surface,
-        area = (not is_airborne) and {
+        area = is_airborne and {
+            {physical_position.x - 1, physical_position.y - 1},
+            {physical_position.x + 1, physical_position.y + 1}
+        } or {
             {physical_position.x - 0.2, physical_position.y - 0.3},
             {physical_position.x + 0.2, physical_position.y}
-        } or nil,
-        position = is_airborne and player.physical_position or nil
+        }
     }
 
     if not tardis or tardis.inactive then return end
 
-    local door_width = is_airborne and 4 or 1.5
-    local is_standing_in_doorway = physical_position.y > tardis.outside_y + 1 and math.abs(physical_position.x - tardis.outside_x) < door_width
+    local is_standing_in_doorway
+    if is_airborne then
+        -- For airborne players, check if they're anywhere within the TARDIS building (2x2)
+        is_standing_in_doorway =
+            math.abs(physical_position.x - tardis.outside_x) < 1.5 and
+            math.abs(physical_position.y - tardis.outside_y) < 2
+    else
+        is_standing_in_doorway =
+            physical_position.y > tardis.outside_y + 1 and
+            math.abs(physical_position.x - tardis.outside_x) < 1.5
+    end
     if not is_standing_in_doorway then return end
 
     enter_tardis(player, tardis, player)
@@ -159,9 +170,10 @@ tardis.on_nth_tick(6, function()
     for player_index, player in pairs(game.connected_players) do
         if player.driving then goto continue end
         if tick - (storage.last_player_teleport[player_index] or 0) < 35 then goto continue end
-        if not player.walking_state.walking then goto continue end
 
         local is_airborne = is_airborne(jetpacks, player)
+        if not player.walking_state.walking and not is_airborne then goto continue end
+
         if not check_position_and_enter_tardis(player, is_airborne) then
             check_position_and_leave_tardis(player, is_airborne)
         end
