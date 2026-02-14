@@ -255,10 +255,9 @@ tardis.register_delayed_function("tardis_console_teleport_complete", function(co
             if safe_position then
                 if target_surface ~= building.surface then
                     -- Cross-surface teleport: destroy and recreate
-                    local pos = safe_position
                     local new_building = target_surface.create_entity {
                         name = building.name,
-                        position = pos,
+                        position = safe_position,
                         force = building.force,
                         quality = building.quality,
                     }
@@ -267,12 +266,12 @@ tardis.register_delayed_function("tardis_console_teleport_complete", function(co
                     storage.factories_by_entity[new_building.unit_number] = tardis_data
                     tardis_data.building = new_building
                     tardis_data.outside_surface = target_surface
-                    tardis_data.outside_x = pos.x or pos[1]
-                    tardis_data.outside_y = pos.y or pos[2]
+                    tardis_data.outside_x = new_building.position.x
+                    tardis_data.outside_y = new_building.position.y
                 else
                     building.teleport(safe_position)
-                    tardis_data.outside_x = safe_position.x or safe_position[1]
-                    tardis_data.outside_y = safe_position.y or safe_position[2]
+                    tardis_data.outside_x = building.position.x
+                    tardis_data.outside_y = building.position.y
                 end
                 tardis_data.outside_door_x = tardis_data.outside_x + tardis_data.layout.outside_door_x
                 tardis_data.outside_door_y = tardis_data.outside_y + tardis_data.layout.outside_door_y
