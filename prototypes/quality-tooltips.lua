@@ -20,7 +20,7 @@ local function add_quality_factoriopedia_info(entity, factoriopedia_info)
         table.insert(
             entity.custom_tooltip_fields,
             {
-                name = {"description." .. stat_to_buff},
+                name = {"quality-description." .. stat_to_buff},
                 quality_header = "quality-tooltip." .. stat_to_buff,
                 value = tostring(factoriopedia_function(entity, 0)),
                 quality_values = quality_values

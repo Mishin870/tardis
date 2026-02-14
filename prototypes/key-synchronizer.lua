@@ -20,7 +20,7 @@ for _, color in pairs(colors) do
         type = "simple-entity",
         name = key_name,
         localised_name = {"item-name.tardis-key"},
-        localised_description = {"", {"item-name.tardis-key"}, " (", {"color." .. color.name}, ")"},
+        localised_description = {"color." .. color.name},
         icons = {
             {icon = T .. "/graphics/items/key.png", icon_size = 64},
             {icon = T .. "/graphics/items/key-tint.png", icon_size = 64, tint = {r = color.r, g = color.g, b = color.b, a = 1}},
@@ -43,7 +43,7 @@ for _, color in pairs(colors) do
         type = "item-with-tags",
         name = key_name,
         localised_name = {"item-name.tardis-key"},
-        localised_description = {"", {"item-name.tardis-key"}, " (", {"color." .. color.name}, ")"},
+        localised_description = {"color." .. color.name},
         icons = {
             {icon = T .. "/graphics/items/key.png", icon_size = 64},
             {icon = T .. "/graphics/items/key-tint.png", icon_size = 64, tint = {r = color.r, g = color.g, b = color.b, a = 1}},
@@ -54,8 +54,6 @@ for _, color in pairs(colors) do
         place_result = key_name,
     }}
 end
-
-
 
 data:extend {
     {
@@ -73,6 +71,7 @@ data:extend {
         selection_box = {{-0.95, -0.95}, {0.95, 0.95}},
         collision_mask = {layers = {object = true, player = true, water_tile = true}},
         inventory_size = 1,
+        quality_affects_inventory_size = false,
         picture = {
             layers = {
                 {

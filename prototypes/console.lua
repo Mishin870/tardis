@@ -16,6 +16,7 @@ data:extend {
         collision_mask = {layers = {object = true, player = true, water_tile = true}},
         inventory_size = 10,
         inventory_type = "with_filters_and_bar",
+        quality_affects_inventory_size = false,
         picture = {
             layers = {
                 {
