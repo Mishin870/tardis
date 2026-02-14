@@ -28,14 +28,14 @@ data:extend {
     },
     {
         type = "recipe",
-        name = "tardis-key",
+        name = "tardis-key-white",
         enabled = false,
         energy_required = 10,
         ingredients = {
             {type = "item", name = "iron-plate", amount = 100},
             {type = "item", name = "electronic-circuit", amount = 50},
         },
-        results = {{type = "item", name = "tardis-key", amount = 1}},
+        results = {{type = "item", name = "tardis-key-white", amount = 1}},
     },
 }
 

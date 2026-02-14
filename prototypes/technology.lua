@@ -18,7 +18,7 @@ local effects = {
     },
     {
         type = "unlock-recipe",
-        recipe = "tardis-key",
+        recipe = "tardis-key-white",
     },
 }
 

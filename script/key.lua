@@ -1,24 +1,17 @@
 local find_surrounding_tardis = remote_api.find_surrounding_tardis
 
--- INITIALIZATION --
-
 tardis.on_event(tardis.events.on_init(), function()
     storage.tardis_valid_keys = storage.tardis_valid_keys or {}
 end)
-
--- GUID GENERATION --
 
 local function generate_guid()
     return game.tick .. "-" .. math.random(100000, 999999)
 end
 
--- PLACEMENT RESTRICTION & KEY ACTIVATION --
-
 tardis.on_event(tardis.events.on_built(), function(event)
     local entity = event.entity
     if not entity.valid then return end
 
-    -- Handle key-synchronizer placement
     if entity.name == "tardis-key-synchronizer" then
         if not remote_api.is_tardis_surface(entity.surface) then
             tardis.cancel_creation(entity, event.player_index, {"tardis-key-gui.wrong-surface"})
@@ -33,25 +26,21 @@ tardis.on_event(tardis.events.on_built(), function(event)
         return
     end
 
-    -- Handle key activation (place_result entity)
-    if entity.name == "tardis-key" then
+    if string.match(entity.name, '^tardis%-key%-') then
+        local key_name = entity.name
         local player = game.get_player(event.player_index)
         if not player then
             entity.destroy()
             return
         end
 
-        -- Get tags from the item that was used to plant
         local tags = event.tags or (event.stack and event.stack.valid_for_read and event.stack.tags)
-
-        -- Immediately destroy the dummy entity
         entity.destroy()
 
-        -- Helper to restore key to cursor
         local function restore_key_to_cursor(tags)
             if player.cursor_stack then
                 player.cursor_stack.set_stack {
-                    name = "tardis-key",
+                    name = key_name,
                     count = 1,
                     tags = tags
                 }
@@ -136,6 +125,30 @@ local function create_key_gui(player, entity)
         direction = "vertical",
     }
 
+    -- Color selection
+    inner.add {
+        type = "label",
+        caption = {"tardis-key-gui.color-label"},
+        style = "caption_label",
+    }
+
+    local colors = {"white", "red", "green", "blue", "yellow", "orange", "purple", "pink", "cyan", "black"}
+    local color_items = {}
+    for i, color_name in ipairs(colors) do
+        color_items[i] = {"color." .. color_name}
+    end
+
+    inner.add {
+        type = "drop-down",
+        name = "tardis-key-color-dropdown",
+        items = color_items,
+        selected_index = 1,
+    }
+
+    -- Spacer
+    local spacer = inner.add {type = "flow", direction = "vertical"}
+    spacer.style.height = 8
+
     inner.add {
         type = "button",
         name = "tardis-key-bind",
@@ -161,8 +174,6 @@ tardis.on_event(defines.events.on_gui_closed, function(event)
     destroy_key_gui(game.get_player(event.player_index))
 end)
 
--- BIND BUTTON HANDLER --
-
 gui_events[defines.events.on_gui_click]["^tardis%-key%-bind$"] = function(event)
     local player = game.get_player(event.player_index)
     if not player then return end
@@ -183,7 +194,7 @@ gui_events[defines.events.on_gui_click]["^tardis%-key%-bind$"] = function(event)
     local key_slot = nil
     for i = 1, #inventory do
         local slot = inventory[i]
-        if slot.valid_for_read and slot.name == 'tardis-key' then
+        if slot.valid_for_read and string.match(slot.name, '^tardis%-key%-') then
             key_slot = slot
             break
         end
@@ -211,9 +222,52 @@ gui_events[defines.events.on_gui_click]["^tardis%-key%-bind$"] = function(event)
     storage.tardis_valid_keys[tardis_id] = storage.tardis_valid_keys[tardis_id] or {}
     storage.tardis_valid_keys[tardis_id][guid] = true
 
-    -- Stamp tags on the key
-    key_slot.tags = {tardis_id = tardis_id, key_guid = guid}
+    -- Get selected color from dropdown
+    local gui = player.gui.relative["tardis-key-panel"]
+    local dropdown = gui and gui["tardis-key-content"]["tardis-key-inner"]["tardis-key-color-dropdown"]
+    local colors = {"white", "red", "green", "blue", "yellow", "orange", "purple", "pink", "cyan", "black"}
+    local selected_key_name = dropdown and dropdown.selected_index > 0 and ("tardis-key-" .. colors[dropdown.selected_index])
+
+    -- Replace key with selected color if different, preserving new tags
+    local new_tags = {tardis_id = tardis_id, key_guid = guid}
+    if selected_key_name and selected_key_name ~= key_slot.name then
+        key_slot.set_stack{name = selected_key_name, count = 1, tags = new_tags}
+    else
+        key_slot.tags = new_tags
+    end
 
     player.create_local_flying_text {text = {"tardis-key-gui.bound"}, create_at_cursor = true}
     player.play_sound { path = "utility/confirm" }
+end
+
+gui_events[defines.events.on_gui_selection_state_changed]["^tardis%-key%-color%-dropdown$"] = function(event)
+    local player = game.get_player(event.player_index)
+    if not player then return end
+
+    local opened = player.opened
+    if not opened or not opened.valid or opened.name ~= "tardis-key-synchronizer" then return end
+
+    local dropdown = event.element
+    if not dropdown or dropdown.selected_index == 0 then return end
+
+    -- Map index to key name
+    local colors = {"white", "red", "green", "blue", "yellow", "orange", "purple", "pink", "cyan", "black"}
+    local new_key_name = "tardis-key-" .. colors[dropdown.selected_index]
+
+    -- Find key in container
+    local inventory = opened.get_inventory(defines.inventory.chest)
+    local key_slot_index = nil
+    for i = 1, #inventory do
+        local slot = inventory[i]
+        if slot.valid_for_read and string.match(slot.name, "^tardis%-key%-") then
+            key_slot_index = i
+            break
+        end
+    end
+
+    if not key_slot_index then return end
+
+    -- Replace with new colored key, preserving tags
+    local old_tags = inventory[key_slot_index].tags
+    inventory[key_slot_index].set_stack{name = new_key_name, count = 1, tags = old_tags}
 end

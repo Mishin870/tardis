@@ -1,53 +1,76 @@
 local T = "__tardis__"
 
-data:extend({
-    {
+local colors = {
+    {name = "white", r = 1, g = 1, b = 1},
+    {name = "red", r = 1, g = 0.2, b = 0.2},
+    {name = "green", r = 0.2, g = 1, b = 0.2},
+    {name = "blue", r = 0.2, g = 0.5, b = 1},
+    {name = "yellow", r = 1, g = 1, b = 0.2},
+    {name = "orange", r = 1, g = 0.6, b = 0.2},
+    {name = "purple", r = 0.8, g = 0.2, b = 1},
+    {name = "pink", r = 1, g = 0.4, b = 0.8},
+    {name = "cyan", r = 0.2, g = 0.8, b = 1},
+    {name = "black", r = 0.2, g = 0.2, b = 0.2},
+}
+
+for _, color in pairs(colors) do
+    local key_name = "tardis-key-" .. color.name
+
+    data:extend{{
         type = "simple-entity",
-        name = "tardis-key",
-        icon = T .. "/graphics/items/key.png",
-        icon_size = 64,
+        name = key_name,
+        localised_name = {"item-name.tardis-key"},
+        localised_description = {"", {"item-name.tardis-key"}, " (", {"color." .. color.name}, ")"},
+        icons = {
+            {icon = T .. "/graphics/items/key.png", icon_size = 64},
+            {icon = T .. "/graphics/items/key-tint.png", icon_size = 64, tint = {r = color.r, g = color.g, b = color.b, a = 1}},
+        },
         flags = {"not-on-map", "placeable-off-grid"},
         selectable_in_game = false,
         max_health = 1,
         collision_box = {{0, 0}, {0, 0}},
         selection_box = {{0, 0}, {0, 0}},
         collision_mask = {layers = {}},
-
         pictures = {{
             filename = T .. "/graphics/items/key.png",
             width = 64,
             height = 64,
         }},
-        autoplace = { probability_expression = 0 },
-    },
-    {
+        autoplace = {probability_expression = 0},
+    }}
+
+    data:extend{{
         type = "item-with-tags",
-        name = "tardis-key",
-        icon = T .. "/graphics/items/key.png",
-        icon_size = 64,
+        name = key_name,
+        localised_name = {"item-name.tardis-key"},
+        localised_description = {"", {"item-name.tardis-key"}, " (", {"color." .. color.name}, ")"},
+        icons = {
+            {icon = T .. "/graphics/items/key.png", icon_size = 64},
+            {icon = T .. "/graphics/items/key-tint.png", icon_size = 64, tint = {r = color.r, g = color.g, b = color.b, a = 1}},
+        },
         stack_size = 1,
         subgroup = "tardis",
         flags = {"not-stackable"},
-        place_result = "tardis-key",
-    },
-})
+        place_result = key_name,
+    }}
+end
 
 
 
 data:extend {
-    -- Key Synchronizer entity (container with GUI)
     {
         type = "container",
         name = "tardis-key-synchronizer",
         icon = T .. "/graphics/buildings/key-synchronizer/icon.png",
         icon_size = 64,
-        flags = {"not-on-map", "hide-alt-info", "not-deconstructable", "not-blueprintable", "not-flammable", "not-upgradable"},
+        flags = {"player-creation", "placeable-player"},
+        minable = {mining_time = 0.5, result = "tardis-key-synchronizer", count = 1},
         selectable_in_game = true,
         hidden = true,
         hidden_in_factoriopedia = true,
         max_health = 1000,
-        collision_box = {{-0.3, -0.3}, {0.3, 0.3}},
-        selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
+        collision_box = {{-0.95, -0.95}, {0.95, 0.95}},
+        selection_box = {{-0.95, -0.95}, {0.95, 0.95}},
         collision_mask = {layers = {object = true, player = true, water_tile = true}},
         inventory_size = 1,
         picture = {
@@ -57,6 +80,7 @@ data:extend {
                     width = 314,
                     height = 157,
                     scale = 0.5,
+                    shift = {1.25, 0},
                     draw_as_shadow = true,
                 },
                 {
@@ -64,13 +88,12 @@ data:extend {
                     width = 314,
                     height = 157,
                     scale = 0.5,
+                    shift = {1.25, 0},
                 },
             }
         },
         render_layer = "object",
     },
-
-    -- Key Synchronizer item (for placement)
     {
         type = "item",
         name = "tardis-key-synchronizer",
