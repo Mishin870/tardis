@@ -47,7 +47,7 @@ data:extend {
         frame_count = 10,
         line_length = 1,
         scale = 0.5,
-        shift = {2.5, -2},
+        shift = {3, -1},
         run_mode = "forward-then-backward",
     },
     {
