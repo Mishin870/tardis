@@ -40,7 +40,7 @@ Supports teleportation to any location, even between planets
 - **Manual map teleportation** (default: On) — show the green "Map" button in the console
 - **Block teleport to space platforms** (default: Off) — prevents TARDIS from teleporting to space platforms
 
-> Exact values for each difficulty level are shown in the setting tooltips in-game.
+> Exact values for each difficulty level are shown in the setting tooltips in-game. Space difficulty is only available when Space Age DLC is active.
 
 ## Recall Keys
 

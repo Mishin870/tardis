@@ -1,19 +1,40 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 2026-02-15
+  Bugfixes:
+    - Fixed critical position desync bug where TARDIS becomes inaccessible after teleportation and keys stop working
+    - Fixed mechsuit entry issue - TARDIS now checks the entire building area instead of just the door
+    - Fixed door hitbox in TARDIS entry script
+    - Fixed key synchronizer receiving extra inventory slot from quality
+    - Fixed TARDIS information in Factoriopedia
+    - Fixed console animation positioning
+  Balancing:
+    - New difficulty tier - Space (available only with Space Age DLC)
+    - Rebalanced recipes and technology costs
+  Graphics:
+    - Fixed key texture in cursor and Factoriopedia, improved key texture
+    - Added teleportation animation for TARDIS exterior
+  Locale:
+    - Added missing localization strings
+---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2026-02-14
-  Changes:
+  Bugfixes:
     - Fixed collision boxes for TARDIS and console, now aligned to grid. Existing buildings are not affected. To update an existing console, remove all items from the TARDIS room including fuel from the console, then rebuild the TARDIS
-    - New mechanic - TARDIS recall keys + 10 colors
+  Features:
+    - New mechanic - TARDIS recall keys with 10 color variants
     - New building - key synchronizer for binding keys to TARDIS
     - Smart algorithm for alerts teleportation
+  Changes:
     - Minor refactoring
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2026-02-12
-  Changes:
-    - Compatibility with "Everything on Nauvis" mod
+  Features:
     - Added mod settings: fuel type/amount, technology/recipe difficulty, map teleport toggle, space platform blocking
     - Improved teleportation algorithm: pre-checks safe landing and cycles through alerts before consuming fuel
+  Bugfixes:
+    - Compatibility with "Everything on Nauvis" mod
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2026-02-10
