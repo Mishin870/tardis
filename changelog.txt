@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2026-02-14
+  Changes:
+    - Fixed collision boxes for TARDIS and console, now aligned to grid. Existing buildings are not affected. To update an existing console, remove all items from the TARDIS room including fuel from the console, then rebuild the TARDIS
+    - New mechanic - TARDIS recall keys + 10 colors
+    - New building - key synchronizer for binding keys to TARDIS
+    - Smart algorithm for alerts teleportation
+    - Minor refactoring
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2026-02-12
   Changes:

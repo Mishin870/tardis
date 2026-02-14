@@ -12,6 +12,7 @@ A heavily reworked fork of [Factorissimo 3](https://mods.factorio.com/mod/factor
 ### 🚀 Teleportation System
 - **Map mode** - click anywhere on the map to select your destination
 - **Alert mode** - instantly jump to the nearest problem (prioritizes planets over space platforms)
+- **Recall by key** - left-click on the ground with a bound TARDIS key to teleport the TARDIS to your position (see [Recall Keys](#recall-keys) section below for details)
 
 Supports teleportation to any location, even between planets
 
@@ -42,6 +43,19 @@ Supports teleportation to any location, even between planets
 > Exact values for each difficulty level are shown in the setting tooltips in-game.
 
 > When SpaceAge is enabled, Hard difficulty changes (uses space resources).
+
+## Recall Keys
+
+TARDIS keys allow you to teleport your TARDIS to your position from anywhere. Keys are color-coded for easy identification.
+
+**How to create a recall key:**
+
+1. Place a **key synchronizer** inside your TARDIS
+2. Craft a **TARDIS key** and place it in the key synchronizer
+3. Select a color from the dropdown and click **Bind**
+4. The key is now ready! Hold it in your cursor and left-click on the ground to teleport the TARDIS to your position from anywhere
+
+Each key is bound to a specific TARDIS and cannot be used with other TARDISes. 10 colors are available for organizing multiple keys.
 
 ## Commands
 
