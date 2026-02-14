@@ -399,6 +399,15 @@ local function start_teleport(player, console, tardis_data, target_position, tar
     console.surface.play_sound {path = "tardis-teleportation", position = console.position}
     building.surface.play_sound {path = "tardis-teleportation", position = building.position}
 
+     rendering.draw_animation {
+         animation = "tardis-animated",
+         target = building.position,
+         surface = building.surface,
+         time_to_live = TELEPORT_TICKS,
+         animation_speed = 0.2,
+         render_layer = "object",
+     }
+
     storage.active_teleport_effects = storage.active_teleport_effects or {}
     storage.active_teleport_effects[#storage.active_teleport_effects + 1] = {
         surface = console.surface,

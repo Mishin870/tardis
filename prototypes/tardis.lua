@@ -68,6 +68,18 @@ data:extend {
         factoriopedia_alternative = "tardis"
     },
     {
+        type = "animation",
+        name = "tardis-animated",
+        filename = T .. "/graphics/buildings/tardis/animated.png",
+        width = 211 * 2,
+        height = 182 * 2,
+        frame_count = 10,
+        line_length = 1,
+        scale = 0.5,
+        shift = {1.37, -1.7},
+        run_mode = "forward-then-backward",
+    },
+    {
         type = "item",
         name = "tardis",
         icon = T .. "/graphics/buildings/tardis/icon.png",
